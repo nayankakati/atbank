@@ -1,5 +1,9 @@
 # atbank
 
+REST API DOC :- https://github.com/nayankakati/atbank/blob/master/User%20Guide%20on%20ATBANK.pdf
+
+HOW TO RUN APPLICATION :- https://github.com/nayankakati/atbank/blob/master/ATBANK%20API%20DOC.pdf
+
 Prerequisite :-
 Java 1.8
 Maven (Any version)
