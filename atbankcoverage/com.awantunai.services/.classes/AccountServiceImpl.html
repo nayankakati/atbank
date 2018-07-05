@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AccountServiceImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AccountServiceImpl (com.awantunai.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AccountServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (27/ 27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigDecimal;
+<i>4</i>&nbsp;import java.util.Date;
+<i>5</i>&nbsp;import java.util.Optional;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>8</i>&nbsp;import org.springframework.stereotype.Service;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.awantunai.entities.Account;
+<i>11</i>&nbsp;import com.awantunai.entities.AccountTransactions;
+<i>12</i>&nbsp;import com.awantunai.entities.User;
+<i>13</i>&nbsp;import com.awantunai.enums.AccountStatus;
+<i>14</i>&nbsp;import com.awantunai.enums.AccountType;
+<i>15</i>&nbsp;import com.awantunai.enums.TransactionType;
+<i>16</i>&nbsp;import com.awantunai.exceptions.AccountException;
+<i>17</i>&nbsp;import com.awantunai.repositories.AccountRepository;
+<i>18</i>&nbsp;import com.awantunai.requests.AccountUpdateRequest;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;/**
+<i>21</i>&nbsp; * Created by nayan.kakati on 7/2/18.
+<i>22</i>&nbsp; */
+<i>23</i>&nbsp;@Service
+<b class="fc"><i>24</i>&nbsp;public class AccountServiceImpl implements AccountService {</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;	@Autowired
+<i>27</i>&nbsp;	private AccountRepository accountRepository;
+<i>28</i>&nbsp;	@Autowired
+<i>29</i>&nbsp;	private TransactionService transactionService;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;	public Account createAccount(User user, BigDecimal amount) throws AccountException {
+<b class="fc"><i>32</i>&nbsp;		Account existingAccount  = accountRepository.findAccountByUserId(user);</b>
+<b class="fc"><i>33</i>&nbsp;		if(existingAccount != null)</b>
+<b class="fc"><i>34</i>&nbsp;			throw new AccountException(&quot;The Account with  &quot; + user.getId() + &quot; is already exits.&quot;);</b>
+<b class="fc"><i>35</i>&nbsp;		existingAccount = createNewAccount(user, amount);</b>
+<b class="fc"><i>36</i>&nbsp;		accountRepository.save(existingAccount);</b>
+<b class="fc"><i>37</i>&nbsp;		transactionService.saveAccountTransaction(createAccountTransactions(existingAccount));</b>
+<b class="fc"><i>38</i>&nbsp;		return existingAccount;</b>
+<i>39</i>&nbsp;	}
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;	public Account updateAccount(AccountUpdateRequest accountRequest) throws AccountException {
+<b class="fc"><i>42</i>&nbsp;		Optional&lt;Account&gt; accountToUpdate  = accountRepository.findById(accountRequest.getAccountId());</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;		if(accountToUpdate.orElse(null) == null)</b>
+<b class="fc"><i>45</i>&nbsp;			throw new AccountException(&quot;The Account with id &quot; + accountRequest.getAccountId() + &quot; does not exists.&quot;);</b>
+<i>46</i>&nbsp;
+<b class="fc"><i>47</i>&nbsp;		accountToUpdate.get().setAccountStatus((accountRequest.getAccountStatus() != null) ? accountRequest.getAccountStatus(): accountToUpdate.get().getAccountStatus());</b>
+<b class="fc"><i>48</i>&nbsp;		accountRepository.save(accountToUpdate.get());</b>
+<b class="fc"><i>49</i>&nbsp;		return accountToUpdate.get();</b>
+<i>50</i>&nbsp;	}
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;	public Account findAccount(Long accountId) throws  AccountException {
+<b class="fc"><i>53</i>&nbsp;		Optional&lt;Account&gt; account =  accountRepository.findById(accountId);</b>
+<i>54</i>&nbsp;
+<b class="fc"><i>55</i>&nbsp;		if(account.orElse(null) == null || !(account.get().getAccountStatus().equals(AccountStatus.ACTIVE)))</b>
+<b class="fc"><i>56</i>&nbsp;			throw new AccountException(&quot;The Account with id &quot; + accountId + &quot; does not exists.&quot;);</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;		return account.get();</b>
+<i>59</i>&nbsp;	}
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;	public Account saveAccount(Account account) throws AccountException {
+<b class="fc"><i>62</i>&nbsp;		return accountRepository.saveAndFlush(account);</b>
+<i>63</i>&nbsp;	}
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;	public Account getAccount(Long accountId) throws AccountException {
+<b class="fc"><i>66</i>&nbsp;		Optional&lt;Account&gt; existingAccount  = accountRepository.findById(accountId);</b>
+<b class="fc"><i>67</i>&nbsp;		if(existingAccount.orElse(null) == null)</b>
+<b class="fc"><i>68</i>&nbsp;			throw new AccountException(&quot;The Account with  &quot; + accountId + &quot; does not exits.&quot;);</b>
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;		return existingAccount.get();</b>
+<i>71</i>&nbsp;	}
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;	private Account createNewAccount(User user, BigDecimal amount) {
+<b class="fc"><i>75</i>&nbsp;		return Account.builder().userId(user).balance(amount).accountStatus(AccountStatus.ACTIVE).accountType(AccountType.SAVINGS).createdOn(new Date(System.currentTimeMillis())).build();</b>
+<i>76</i>&nbsp;	}
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;	private AccountTransactions createAccountTransactions(Account account) {
+<b class="fc"><i>79</i>&nbsp;		StringBuffer buffer = new StringBuffer();</b>
+<b class="fc"><i>80</i>&nbsp;		buffer.append(&quot;A new Account has been created with id &quot;).append(account.getId()).append(&quot; and amount with &quot;).append(account.getBalance());</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;		return AccountTransactions.builder().accountId(account).body(buffer.toString()).transactionOn(new Date(System.currentTimeMillis())).transactionType(TransactionType.CREDIT).build();</b>
+<i>83</i>&nbsp;	}
+<i>84</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

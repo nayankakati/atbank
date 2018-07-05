@@ -1,0 +1,73 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.repositories</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserRepository (com.awantunai.repositories)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">UserRepository$MockitoMock$1105051685</td>
+  </tr>
+  <tr>
+    <td class="name">UserRepository$MockitoMock$1105051685$auxiliary$fJ2ppq2y</td>
+  </tr>
+  <tr>
+    <td class="name">UserRepository$MockitoMock$1105051685$auxiliary$IszOiO7t</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.repositories;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+<i>4</i>&nbsp;import org.springframework.data.jpa.repository.Query;
+<i>5</i>&nbsp;import org.springframework.data.repository.query.Param;
+<i>6</i>&nbsp;import org.springframework.stereotype.Repository;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import com.awantunai.entities.User;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * Created by nayan.kakati on 7/2/18.
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;@Repository
+<i>14</i>&nbsp;public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+<i>15</i>&nbsp;	@Query(&quot;SELECT u FROM User u where u.username=:username&quot;)
+<i>16</i>&nbsp;	User findByUserName(@Param(&quot;username&quot;) String username);
+<i>17</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

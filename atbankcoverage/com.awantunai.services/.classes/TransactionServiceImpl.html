@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionServiceImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionServiceImpl (com.awantunai.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (30/ 30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigDecimal;
+<i>4</i>&nbsp;import java.util.Date;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>8</i>&nbsp;import org.springframework.stereotype.Service;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.awantunai.entities.Account;
+<i>11</i>&nbsp;import com.awantunai.entities.AccountTransactions;
+<i>12</i>&nbsp;import com.awantunai.enums.TransactionType;
+<i>13</i>&nbsp;import com.awantunai.exceptions.TransactionException;
+<i>14</i>&nbsp;import com.awantunai.repositories.TransactionRepository;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; * Created by nayan.kakati on 7/3/18.
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;@Service
+<b class="fc"><i>20</i>&nbsp;public class TransactionServiceImpl implements TransactionService {</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;	@Autowired
+<i>23</i>&nbsp;	private TransactionRepository transactionRepository;
+<i>24</i>&nbsp;	@Autowired
+<i>25</i>&nbsp;	private AccountService accountService;
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;	private BigDecimal zero = new BigDecimal(0);</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;	public Account creditAmountToAccount(Account account, BigDecimal amount) throws TransactionException {
+<b class="fc"><i>30</i>&nbsp;			if (amount.compareTo(zero) != 1) {</b>
+<b class="fc"><i>31</i>&nbsp;				throw new TransactionException(&quot;Negative amount cannot be added.&quot;);</b>
+<i>32</i>&nbsp;			}
+<b class="fc"><i>33</i>&nbsp;			StringBuffer buffer = new StringBuffer();</b>
+<b class="fc"><i>34</i>&nbsp;			BigDecimal balance = account.getBalance();</b>
+<b class="fc"><i>35</i>&nbsp;			balance = balance.add(amount);</b>
+<b class="fc"><i>36</i>&nbsp;			account.setBalance(balance);</b>
+<b class="fc"><i>37</i>&nbsp;			account = accountService.saveAccount(account);</b>
+<i>38</i>&nbsp;			// Create a transaction report for this credit line
+<b class="fc"><i>39</i>&nbsp;			buffer.append(&quot;The amount &quot;).append(amount).append(&quot; was added to the account id &quot;).append(account.getId());</b>
+<b class="fc"><i>40</i>&nbsp;			AccountTransactions transactions = getAccountTransaction(buffer.toString(), account, TransactionType.CREDIT);</b>
+<b class="fc"><i>41</i>&nbsp;			transactionRepository.save(transactions);</b>
+<b class="fc"><i>42</i>&nbsp;			return account;</b>
+<i>43</i>&nbsp;	}
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;	public Account debitAmountToAccount(Account account, BigDecimal amount) throws TransactionException {
+<b class="fc"><i>46</i>&nbsp;		if ((zero.compareTo(amount) == 1) || (account.getBalance().compareTo(amount) == -1)) {</b>
+<b class="fc"><i>47</i>&nbsp;			throw new TransactionException(&quot;Either your account has Insufficient Balance or you entered Negative Amount.&quot;);</b>
+<i>48</i>&nbsp;		}
+<b class="fc"><i>49</i>&nbsp;		StringBuffer buffer = new StringBuffer();</b>
+<b class="fc"><i>50</i>&nbsp;		BigDecimal balance = account.getBalance();</b>
+<b class="fc"><i>51</i>&nbsp;		balance = balance.subtract(amount);</b>
+<b class="fc"><i>52</i>&nbsp;		account.setBalance(balance);</b>
+<b class="fc"><i>53</i>&nbsp;		accountService.saveAccount(account);</b>
+<i>54</i>&nbsp;		// Create a transaction report for this credit line
+<b class="fc"><i>55</i>&nbsp;		buffer.append(&quot;The amount &quot;).append(amount).append(&quot; was debited  from the account id &quot;).append(account.getId());</b>
+<b class="fc"><i>56</i>&nbsp;		AccountTransactions transactions = getAccountTransaction(buffer.toString(), account, TransactionType.DEBIT);</b>
+<b class="fc"><i>57</i>&nbsp;		transactionRepository.save(transactions);</b>
+<b class="fc"><i>58</i>&nbsp;		return account;</b>
+<i>59</i>&nbsp;	}
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;	public Account transferAmountToAccount(Account fromAccount, Account toAccount, BigDecimal amount) throws TransactionException {
+<b class="fc"><i>62</i>&nbsp;		debitAmountToAccount(fromAccount, amount);</b>
+<b class="fc"><i>63</i>&nbsp;		creditAmountToAccount(toAccount, amount);</b>
+<b class="fc"><i>64</i>&nbsp;		return fromAccount;</b>
+<i>65</i>&nbsp;	}
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;	public List&lt;AccountTransactions&gt; listTransactions(Account account, Long from, Long to, Integer size) throws TransactionException {
+<b class="fc"><i>68</i>&nbsp;		return transactionRepository.listTransactions(account, from, to, size);</b>
+<i>69</i>&nbsp;	}
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;	public AccountTransactions saveAccountTransaction(AccountTransactions accountTransactions) throws TransactionException {
+<b class="fc"><i>72</i>&nbsp;		return transactionRepository.save(accountTransactions);</b>
+<i>73</i>&nbsp;	}
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;	private AccountTransactions getAccountTransaction(String body, Account account, TransactionType transactionType) {
+<b class="fc"><i>76</i>&nbsp;		return AccountTransactions.builder().accountId(account).body(body).transactionOn(new Date(System.currentTimeMillis())).transactionType(transactionType).build();</b>
+<i>77</i>&nbsp;	}
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

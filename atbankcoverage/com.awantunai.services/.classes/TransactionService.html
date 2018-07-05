@@ -1,0 +1,75 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionService (com.awantunai.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">TransactionService$MockitoMock$1389533500</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionService$MockitoMock$1389533500$auxiliary$fByUhxqu</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionService$MockitoMock$1389533500$auxiliary$oZb1giBb</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigDecimal;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.awantunai.entities.Account;
+<i>7</i>&nbsp;import com.awantunai.entities.AccountTransactions;
+<i>8</i>&nbsp;import com.awantunai.exceptions.TransactionException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * Created by nayan.kakati on 7/3/18.
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public interface TransactionService {
+<i>14</i>&nbsp;	Account creditAmountToAccount(Account account, BigDecimal amount) throws TransactionException;
+<i>15</i>&nbsp;	Account debitAmountToAccount(Account account, BigDecimal amount) throws TransactionException;
+<i>16</i>&nbsp;	Account transferAmountToAccount(Account fromAccount, Account toAccount, BigDecimal amount) throws TransactionException;
+<i>17</i>&nbsp;	List&lt;AccountTransactions&gt; listTransactions(Account account, Long from, Long to, Integer size) throws TransactionException;
+<i>18</i>&nbsp;	AccountTransactions saveAccountTransaction(AccountTransactions accountTransactions) throws TransactionException;
+<i>19</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

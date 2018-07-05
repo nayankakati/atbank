@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.controllers</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionController (com.awantunai.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/ 24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.controllers;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import static com.awantunai.helpers.ResponseBuilder.createAccountSuccessResponse;
+<i>4</i>&nbsp;import static com.awantunai.helpers.ResponseBuilder.createAccountTransactionSucessResponse;
+<i>5</i>&nbsp;import static com.awantunai.helpers.ResponseBuilder.createErrorListResponse;
+<i>6</i>&nbsp;import static com.awantunai.helpers.ResponseBuilder.createErrorResponse;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>11</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>12</i>&nbsp;import org.springframework.lang.NonNull;
+<i>13</i>&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+<i>14</i>&nbsp;import org.springframework.web.bind.annotation.PathVariable;
+<i>15</i>&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+<i>16</i>&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+<i>17</i>&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+<i>18</i>&nbsp;import org.springframework.web.bind.annotation.RequestParam;
+<i>19</i>&nbsp;import org.springframework.web.bind.annotation.RestController;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;import com.awantunai.entities.Account;
+<i>22</i>&nbsp;import com.awantunai.entities.AccountTransactions;
+<i>23</i>&nbsp;import com.awantunai.exceptions.AccountException;
+<i>24</i>&nbsp;import com.awantunai.exceptions.TransactionException;
+<i>25</i>&nbsp;import com.awantunai.requests.TransactionRequest;
+<i>26</i>&nbsp;import com.awantunai.responses.Response;
+<i>27</i>&nbsp;import com.awantunai.services.AccountService;
+<i>28</i>&nbsp;import com.awantunai.services.TransactionService;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;/**
+<i>31</i>&nbsp; * Created by nayan.kakati on 7/3/18.
+<i>32</i>&nbsp; */
+<i>33</i>&nbsp;@RestController
+<i>34</i>&nbsp;@RequestMapping(&quot;/api&quot;)
+<b class="fc"><i>35</i>&nbsp;public class TransactionController {</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;	@Autowired
+<i>38</i>&nbsp;	private TransactionService transactionService;
+<i>39</i>&nbsp;	@Autowired
+<i>40</i>&nbsp;	private AccountService accountService;
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;	@PostMapping(&quot;/transactions/credit&quot;)
+<i>43</i>&nbsp;	public Response creditAmountToAccount(@RequestBody TransactionRequest transactionRequest) {
+<i>44</i>&nbsp;		try {
+<b class="fc"><i>45</i>&nbsp;			Account account = accountService.findAccount(transactionRequest.getAccountId());</b>
+<b class="fc"><i>46</i>&nbsp;			Account updatedAccount = transactionService.creditAmountToAccount(account, transactionRequest.getAmount());</b>
+<b class="fc"><i>47</i>&nbsp;			return createAccountSuccessResponse(updatedAccount);</b>
+<b class="fc"><i>48</i>&nbsp;		} catch (AccountException | TransactionException exception) {</b>
+<b class="fc"><i>49</i>&nbsp;			return createErrorResponse(HttpStatus.PRECONDITION_FAILED.name(), exception);</b>
+<i>50</i>&nbsp;		}
+<i>51</i>&nbsp;	}
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;	@PostMapping(&quot;/transactions/debit&quot;)
+<i>54</i>&nbsp;	public Response debitAmountToAccount(@RequestBody TransactionRequest transactionRequest) {
+<i>55</i>&nbsp;		try {
+<b class="fc"><i>56</i>&nbsp;			Account account = accountService.findAccount(transactionRequest.getAccountId());</b>
+<b class="fc"><i>57</i>&nbsp;			Account updatedAccount = transactionService.debitAmountToAccount(account, transactionRequest.getAmount());</b>
+<b class="fc"><i>58</i>&nbsp;			return createAccountSuccessResponse(updatedAccount);</b>
+<b class="fc"><i>59</i>&nbsp;		} catch (AccountException | TransactionException exception) {</b>
+<b class="fc"><i>60</i>&nbsp;			return createErrorResponse(HttpStatus.PRECONDITION_FAILED.name(), exception);</b>
+<i>61</i>&nbsp;		}
+<i>62</i>&nbsp;	}
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;	@PostMapping(&quot;/transactions/transfer&quot;)
+<i>65</i>&nbsp;	public Response transferAmountToAccount(@RequestBody TransactionRequest transactionRequest) {
+<i>66</i>&nbsp;		try {
+<b class="fc"><i>67</i>&nbsp;			if(transactionRequest.getToAccountId() == null)</b>
+<b class="fc"><i>68</i>&nbsp;				return createErrorResponse(HttpStatus.PRECONDITION_FAILED.name(), new AccountException(&quot;To account number is mandatory.&quot;));</b>
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;			Account fromAccount = accountService.findAccount(transactionRequest.getAccountId());</b>
+<b class="fc"><i>71</i>&nbsp;			Account toAccount = accountService.findAccount(transactionRequest.getToAccountId());</b>
+<b class="fc"><i>72</i>&nbsp;			Account updatedAccount = transactionService.transferAmountToAccount(fromAccount, toAccount, transactionRequest.getAmount());</b>
+<b class="fc"><i>73</i>&nbsp;			return createAccountSuccessResponse(updatedAccount);</b>
+<b class="fc"><i>74</i>&nbsp;		} catch (AccountException | TransactionException exception) {</b>
+<b class="fc"><i>75</i>&nbsp;			return createErrorResponse(HttpStatus.PRECONDITION_FAILED.name(), exception);</b>
+<i>76</i>&nbsp;		}
+<i>77</i>&nbsp;	}
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;	@GetMapping(&quot;/transactions/accounts/{accountId}&quot;)
+<i>80</i>&nbsp;	public List&lt;?&gt; listAllTheTransactionForAnAccountId(@PathVariable Long accountId, @RequestParam(required = false) @NonNull Long from, @RequestParam(required = false) @NonNull Long to, @RequestParam(required = false) @NonNull Integer size) {
+<i>81</i>&nbsp;		try {
+<b class="fc"><i>82</i>&nbsp;			Account account = accountService.findAccount(accountId);</b>
+<b class="fc"><i>83</i>&nbsp;			List&lt;AccountTransactions&gt; accountTransactionss = transactionService.listTransactions(account, from, to, size);</b>
+<b class="fc"><i>84</i>&nbsp;			return createAccountTransactionSucessResponse(accountTransactionss);</b>
+<b class="fc"><i>85</i>&nbsp;		} catch (AccountException | TransactionException exception) {</b>
+<b class="fc"><i>86</i>&nbsp;			return createErrorListResponse(HttpStatus.PRECONDITION_FAILED.name(), exception);</b>
+<i>87</i>&nbsp;		}
+<i>88</i>&nbsp;	}
+<i>89</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

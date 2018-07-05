@@ -1,0 +1,79 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.repositories</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionRepository (com.awantunai.repositories)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">TransactionRepository$MockitoMock$628402235</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionRepository$MockitoMock$628402235$auxiliary$NevQXLro</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionRepository$MockitoMock$628402235$auxiliary$vA8KKJ3l</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.repositories;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+<i>4</i>&nbsp;import org.springframework.data.jpa.repository.Modifying;
+<i>5</i>&nbsp;import org.springframework.data.jpa.repository.Query;
+<i>6</i>&nbsp;import org.springframework.data.repository.query.Param;
+<i>7</i>&nbsp;import org.springframework.stereotype.Repository;
+<i>8</i>&nbsp;import org.springframework.transaction.annotation.Transactional;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.awantunai.entities.Account;
+<i>11</i>&nbsp;import com.awantunai.entities.AccountTransactions;
+<i>12</i>&nbsp;import com.awantunai.entities.User;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;/**
+<i>15</i>&nbsp; * Created by nayan.kakati on 7/2/18.
+<i>16</i>&nbsp; */
+<i>17</i>&nbsp;@Repository
+<i>18</i>&nbsp;public interface TransactionRepository extends JpaRepository&lt;AccountTransactions, Long&gt;, TransactionRepositoryCustom {
+<i>19</i>&nbsp;	@Transactional
+<i>20</i>&nbsp;	@Modifying
+<i>21</i>&nbsp;	@Query(&quot;DELETE FROM AccountTransactions a where a.accountId=:accountId&quot;)
+<i>22</i>&nbsp;	void deleteAccountTransactionByAccountId(@Param(&quot;accountId&quot;) Account accountId);
+<i>23</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>

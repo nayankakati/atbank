@@ -1,0 +1,73 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UserService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.awantunai.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UserService (com.awantunai.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$523013236</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$523013236$auxiliary$5EMtFwEq</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$523013236$auxiliary$o6alwhkl</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.awantunai.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.awantunai.entities.Account;
+<i>4</i>&nbsp;import com.awantunai.entities.User;
+<i>5</i>&nbsp;import com.awantunai.exceptions.UserException;
+<i>6</i>&nbsp;import com.awantunai.requests.UserRequest;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * Created by nayan.kakati on 7/2/18.
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public interface UserService {
+<i>12</i>&nbsp;	User createUser(UserRequest user) throws UserException;
+<i>13</i>&nbsp;	Account loginUser(UserRequest user) throws UserException;
+<i>14</i>&nbsp;	User updateUser(UserRequest user) throws UserException;
+<i>15</i>&nbsp;	User deleteUser(UserRequest user) throws UserException;
+<i>16</i>&nbsp;	User findUser(Long userId) throws UserException;
+<i>17</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-07-05 12:43</div>
+</div>
+</body>
+</html>
